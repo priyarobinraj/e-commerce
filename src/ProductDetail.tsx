@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
+import { useCart } from "./Cartcontext";
 
 interface Product {
   id: number;
@@ -14,6 +15,7 @@ const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const { addToCart } = useCart();
 
   useEffect(() => {
     if (!id) return;
@@ -29,6 +31,17 @@ const ProductDetail: React.FC = () => {
         setLoading(false);
       });
   }, [id]);
+
+  const handleAddToCart = () => {
+    if (product) {
+      addToCart({
+        id: product.id,
+        title: product.title,
+        price: product.price,
+        thumbnail: product.thumbnail,
+      });
+    }
+  };
 
   if (loading) {
     return (
@@ -74,7 +87,10 @@ const ProductDetail: React.FC = () => {
           <p className="text-gray-700 mb-6 text-sm sm:text-base">
             {product.description}
           </p>
-          <button className="bg-blue-600 text-white px-4 sm:px-6 py-2 rounded hover:bg-blue-700 text-sm sm:text-base">
+          <button
+            onClick={handleAddToCart}
+            className="bg-blue-600 text-white px-4 sm:px-6 py-2 rounded hover:bg-blue-700 text-sm sm:text-base"
+          >
             Add to Cart
           </button>
         </div>

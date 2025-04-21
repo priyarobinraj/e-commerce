@@ -3,6 +3,8 @@ import axios from "axios";
 import { FaSearch, FaUser, FaHeart, FaShoppingCart } from "react-icons/fa";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import ProductDetail from "./ProductDetail";
+import Cart from "./Cart";
+import { CartProvider, useCart } from "./Cartcontext";
 
 interface Product {
   id: number;
@@ -17,6 +19,7 @@ const ProductList: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [searchResults, setSearchResults] = useState<Product[]>([]);
   const debounceTimeoutRef = useRef<number | null>(null);
+  const { cartItemCount } = useCart();
 
   const handleSearch = (query: string): void => {
     setSearchQuery(query);
@@ -111,9 +114,14 @@ const ProductList: React.FC = () => {
             <button className="p-2">
               <FaHeart className="text-base sm:text-lg" />
             </button>
-            <button className="p-2">
+            <Link to="/cart" className="p-2 relative">
               <FaShoppingCart className="text-base sm:text-lg" />
-            </button>
+              {cartItemCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {cartItemCount}
+                </span>
+              )}
+            </Link>
           </div>
         </div>
       </header>
@@ -122,9 +130,9 @@ const ProductList: React.FC = () => {
         <div className="container mx-auto">
           <ul className="hidden sm:flex space-x-6 text-gray-700 text-sm sm:text-base">
             <li>
-              <a href="#" className="hover:text-blue-600">
+              <Link to="/" className="hover:text-blue-600">
                 Home
-              </a>
+              </Link>
             </li>
             <li>
               <a href="#" className="hover:text-blue-600">
@@ -233,12 +241,15 @@ const ProductList: React.FC = () => {
 
 const App: React.FC = () => {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<ProductList />} />
-        <Route path="/product/:id" element={<ProductDetail />} />
-      </Routes>
-    </Router>
+    <CartProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<ProductList />} />
+          <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/cart" element={<Cart />} />
+        </Routes>
+      </Router>
+    </CartProvider>
   );
 };
 

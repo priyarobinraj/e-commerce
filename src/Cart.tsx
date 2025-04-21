@@ -1,15 +1,20 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useCart } from "./Cartcontext";
+import { useCart } from "./CartContext";
 
+interface CartItem {
+  id: number;
+  title: string;
+  price: number;
+  thumbnail: string;
+  quantity: number;
+}
 const Cart: React.FC = () => {
   const { cart, increaseQuantity, decreaseQuantity, cartItemCount } = useCart();
-
   const totalPrice = cart.reduce(
-    (total, item) => total + item.price * item.quantity,
+    (total: number, item: CartItem) => total + item.price * item.quantity,
     0
   );
-
   return (
     <div className="container mx-auto py-6 sm:py-10 min-h-screen bg-gray-100">
       <Link

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
-import { useCart } from "./Cartcontext";
+import { useCart } from "./CartContext";
 
 interface Product {
   id: number;

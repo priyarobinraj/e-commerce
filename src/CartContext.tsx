@@ -92,6 +92,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
+export default CartContext;
 export const useCart = () => {
   const context = useContext(CartContext);
   if (!context) {
@@ -99,5 +100,3 @@ export const useCart = () => {
   }
   return context;
 };
-
-export default CartContext;

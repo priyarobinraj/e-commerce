@@ -4,7 +4,7 @@ import { FaSearch, FaUser, FaHeart, FaShoppingCart } from "react-icons/fa";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import ProductDetail from "./ProductDetail";
 import Cart from "./Cart";
-import { CartProvider, useCart } from "./Cartcontext";
+import { CartProvider, useCart } from "./CartContext";
 
 interface Product {
   id: number;
